@@ -14,6 +14,10 @@ CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
 
+CLIENT_ID = '_OelalzmE0BkIA'
+CLIENT_SECRET = 'OfovrVMdiLpFMNgdWPmFEzG_rOY'
+USERNAME = 'gamesalebot'
+PASSWORD = ':VT2s_)8MgMA8u^U'
 
 # specifically looking for the selling section
 def get_relevant_part_of_title(title):
@@ -31,13 +35,14 @@ def search_keyword_in_title(relevant_title, keyword):
 
 def send_private_message(reddit, submission):
     subject = 'GAMESALEBOT: ' + submission.title
-    body = '''Link: <{url}>\n\n{post_key}{submission_id}
+    truncated_subject = subject[:100]
+    body = '''Link: {url}\n\n{post_key}{submission_id}
     '''.format(
         url=submission.url,
         post_key=MESSAGE_BODY_SUBMISSION_ID_KEY,
         submission_id=submission.id)
 
-    reddit.redditor('mrbowow').message(subject, body)
+    reddit.redditor('mrbowow').message(truncated_subject, body)
 
 
 def get_seen_submission_ids(reddit):
@@ -63,7 +68,7 @@ def lambda_handler(event, context):
 
     seen_submission_ids = get_seen_submission_ids(reddit)
 
-    for submission in reddit.subreddit(SUBREDDIT).new(limit=20):
+    for submission in reddit.subreddit(SUBREDDIT).new(limit=50):
         relevant_title = get_relevant_part_of_title(submission.title)
 
         if relevant_title \
